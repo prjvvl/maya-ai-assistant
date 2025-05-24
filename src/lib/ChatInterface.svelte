@@ -53,7 +53,7 @@
 				</div>
 				<div class="chat-details">
 					<div class="app-title">
-						<h1>Maya</h1>
+						<h1>maya</h1>
 					</div>
 					<div class="chat-status">
 						<span class="status-dot {isListening ? 'listening' : 'online'}"></span>
@@ -247,14 +247,13 @@
 	.app-title h1 {
 		margin: 0;
 		font-size: 1.75rem;
-		font-weight: 700;
-		font-family: 'Brush Script MT', 'Lucida Handwriting', 'Segoe Script', 'Dancing Script', cursive;
+		font-weight: 600;
+		font-family: 'Comic Neue', 'Trebuchet MS', 'Verdana', 'Georgia', 'Times New Roman', serif;
 		background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
 		background-clip: text;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		letter-spacing: -0.025em;
 		line-height: 1.1;
 	}
 
