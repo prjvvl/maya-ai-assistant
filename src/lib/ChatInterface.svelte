@@ -41,7 +41,8 @@
 	});
 </script>
 
-<div class="chat-app">	<!-- Header -->
+<div class="chat-app">
+	<!-- Header -->
 	<div class="chat-header">
 		<div class="header-background"></div>
 		<div class="header-content">
@@ -49,8 +50,14 @@
 				<div class="app-logo">
 					<div class="logo-icon">
 						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-							<path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+							<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+							<path
+								d="M8 12l2 2 4-4"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
 						</svg>
 					</div>
 					<div class="app-title">
@@ -134,12 +141,12 @@
 		flex-direction: column;
 		background: #ffffff;
 		overflow: hidden;
-	}	/* Header */
+	} /* Header */
 	.chat-header {
 		background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 		color: white;
 		padding: 1.5rem 1rem;
-		box-shadow: 
+		box-shadow:
 			0 4px 20px rgba(102, 126, 234, 0.3),
 			0 8px 40px rgba(118, 75, 162, 0.2);
 		z-index: 10;
@@ -157,7 +164,7 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background: 
+		background:
 			radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
 			radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
 		pointer-events: none;
@@ -331,11 +338,14 @@
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 	}
 	@keyframes pulse-glow {
-		0%, 100% {
+		0%,
+		100% {
 			box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
 		}
 		50% {
-			box-shadow: 0 0 16px rgba(74, 222, 128, 0.8), 0 0 24px rgba(74, 222, 128, 0.4);
+			box-shadow:
+				0 0 16px rgba(74, 222, 128, 0.8),
+				0 0 24px rgba(74, 222, 128, 0.4);
 		}
 	}
 
