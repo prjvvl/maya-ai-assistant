@@ -12,11 +12,30 @@
 	let transcript = '';
 	let error = '';
 	let isSupported = false;
+	let showUnsupportedMessage = false;
+	let checkingSupport = true;
 
-	onMount(() => {
+	onMount(async () => {
 		// Initialize speech service and check support
 		isSupported = speechService.supported;
-		console.log('Speech recognition supported:', isSupported);
+		console.log('Speech recognition supported (initial):', isSupported);
+
+		if (isSupported) {
+			checkingSupport = false;
+		} else {
+			// If not supported immediately, wait a bit before showing the error message
+			// This gives the browser time to initialize speech recognition
+			setTimeout(async () => {
+				// Check again with async method after delay
+				const asyncSupported = await speechService.checkSupportAsync();
+				isSupported = asyncSupported;
+				console.log('Speech recognition supported (after delay):', isSupported);
+				checkingSupport = false;
+				if (!isSupported) {
+					showUnsupportedMessage = true;
+				}
+			}, 1000); // Wait 1 seconds before showing the error
+		}
 	});
 
 	function toggleListening() {
@@ -75,7 +94,12 @@
 </script>
 
 <div class="speech-controls">
-	{#if !isSupported}
+	{#if checkingSupport}
+		<div class="checking-support">
+			<div class="loading-spinner"></div>
+			<p>Checking speech recognition support...</p>
+		</div>
+	{:else if !isSupported && showUnsupportedMessage}
 		<div class="error-message">
 			<div class="error-icon">⚠️</div>
 			<div class="error-content">
@@ -159,6 +183,42 @@
 <style>
 	.speech-controls {
 		width: 100%;
+	}
+
+	.checking-support {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding: 2rem;
+		background: #f8fafc;
+		border: 1px solid #e2e8f0;
+		border-radius: 1rem;
+		text-align: center;
+	}
+
+	.checking-support p {
+		margin: 0;
+		color: #64748b;
+		font-size: 0.9rem;
+	}
+
+	.loading-spinner {
+		width: 24px;
+		height: 24px;
+		border: 2px solid #e2e8f0;
+		border-top: 2px solid #3b82f6;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 
 	.controls {

@@ -9,6 +9,7 @@ class SpeechService {
 	private recognition: SpeechRecognition | null = null;
 	private isSupported = false;
 	private isInitialized = false;
+	private initPromise: Promise<boolean> | null = null;
 
 	init() {
 		if (!browser) return false;
@@ -29,6 +30,28 @@ class SpeechService {
 		this.isSupported = true;
 		this.isInitialized = true;
 		return true;
+	}
+
+	// Async method to check support with proper timing
+	async checkSupportAsync(): Promise<boolean> {
+		if (this.initPromise) {
+			return this.initPromise;
+		}
+
+		this.initPromise = new Promise((resolve) => {
+			if (this.isInitialized) {
+				resolve(this.isSupported);
+				return;
+			}
+
+			// Give the browser some time to initialize speech recognition
+			setTimeout(() => {
+				const result = this.init();
+				resolve(result);
+			}, 100);
+		});
+
+		return this.initPromise;
 	}
 
 	startListening(
