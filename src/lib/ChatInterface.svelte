@@ -1,10 +1,12 @@
 <script lang="ts">	import type { Message } from './types';
-	import { afterUpdate } from 'svelte';
+	import { afterUpdate, createEventDispatcher } from 'svelte';
 
 	export let messages: Message[] = [];
 	export let isLoading = false;
 
+	const dispatch = createEventDispatcher();
 	let messagesContainer: HTMLElement;
+
 	function formatTime(date: Date): string {
 		return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 	}
@@ -17,6 +19,10 @@
 		}
 	}
 
+	function startNewChat() {
+		dispatch('newChat');
+	}
+
 	// Scroll to bottom after each update
 	afterUpdate(() => {
 		scrollToBottom();
@@ -24,6 +30,16 @@
 </script>
 
 <div class="chat-container">
+	{#if messages.length > 0}
+		<div class="chat-header">		<button class="new-chat-btn" on:click={startNewChat} title="Start new conversation">
+			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M12 5v14m-7-7h14"/>
+			</svg>
+			New Chat
+		</button>
+		</div>
+	{/if}
+	
 	<div class="messages" bind:this={messagesContainer}>
 		{#if messages.length === 0}
 			<div class="welcome-message">
@@ -55,8 +71,7 @@
 	</div>
 </div>
 
-<style>
-	.chat-container {
+<style>	.chat-container {
 		flex: 1;
 		background: rgba(255, 255, 255, 0.95);
 		border-radius: 1rem;
@@ -65,6 +80,67 @@
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 		backdrop-filter: blur(10px);
 		border: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	.chat-header {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 1rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.new-chat-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+		border: none;
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	}
+
+	.new-chat-btn:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.new-chat-btn:active {
+		transform: translateY(0);
+	}
+
+	.new-chat-btn svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	.chat-header {
+		display: flex;
+		justify-content: flex-end;
+		margin-bottom: 1rem;
+	}
+
+	.new-chat-btn {
+		background: #667eea;
+		color: white;
+		border: none;
+		border-radius: 1rem;
+		padding: 0.5rem 1rem;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		transition: background 0.3s;
+	}
+
+	.new-chat-btn:hover {
+		background: #5a6fdb;
 	}
 
 	.messages {

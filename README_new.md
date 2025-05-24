@@ -15,34 +15,39 @@ A modern web-based talking AI assistant built with SvelteKit and TypeScript. May
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
 - Modern browser with Web Speech API support (Chrome, Edge, Safari)
 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone <repository-url>
    cd maya-io
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Set up environment variables:
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit `.env` and add your Google Gemini API key:
+
    ```
    GOOGLE_GEMINI_API_KEY=your_api_key_here
    ```
 
 4. Start the development server:
+
    ```bash
    npm run dev
    ```
@@ -52,16 +57,19 @@ A modern web-based talking AI assistant built with SvelteKit and TypeScript. May
 ## 🏗️ Architecture
 
 ### Frontend (SvelteKit)
+
 - **Speech Recognition**: Converts user speech to text
 - **Chat Interface**: Displays conversation history
 - **Speech Controls**: Manages microphone input and status
 - **Text-to-Speech**: Speaks AI responses aloud
 
 ### Backend (SvelteKit API)
+
 - **Chat Endpoint**: `/api/chat` - Processes messages through Gemini
 - **Google Gemini Integration**: Generates intelligent responses
 
 ### Key Components
+
 - `src/routes/+page.svelte` - Main chat interface
 - `src/routes/api/chat/+server.ts` - Gemini API endpoint
 - `src/lib/SpeechControls.svelte` - Voice input controls
@@ -80,6 +88,7 @@ A modern web-based talking AI assistant built with SvelteKit and TypeScript. May
 ### Browser Compatibility
 
 The Web Speech API requires a modern browser:
+
 - ✅ Chrome 25+
 - ✅ Edge 79+
 - ✅ Safari 14.1+
@@ -89,13 +98,14 @@ The Web Speech API requires a modern browser:
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `GOOGLE_GEMINI_API_KEY` | Your Google Gemini API key | Yes |
+| Variable                | Description                | Required |
+| ----------------------- | -------------------------- | -------- |
+| `GOOGLE_GEMINI_API_KEY` | Your Google Gemini API key | Yes      |
 
 ### Speech Settings
 
 The speech service can be configured in `src/lib/speechService.ts`:
+
 - Language: Default is `en-US`
 - Speech rate, pitch, and volume for TTS
 - Recognition settings (continuous, interim results)

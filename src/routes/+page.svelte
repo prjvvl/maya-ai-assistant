@@ -13,7 +13,6 @@
 		// Initialize speech service
 		speechService.init();
 	});
-
 	async function handleSpeechResult(transcript: string) {
 		if (!transcript.trim()) return;
 
@@ -29,13 +28,16 @@
 		isLoading = true;
 
 		try {
-			// Send to API
+			// Send to API with conversation history
 			const response = await fetch('/api/chat', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ message: transcript })
+				body: JSON.stringify({ 
+					message: transcript,
+					conversationHistory: messages.slice(-10) // Send last 10 messages for context
+				})
 			});
 
 			if (!response.ok) {
@@ -72,6 +74,12 @@
 	function handleListeningChange(listening: boolean) {
 		isListening = listening;
 	}
+
+	function handleNewChat() {
+		messages = [];
+		// Stop any ongoing speech
+		speechService.stop();
+	}
 </script>
 
 <svelte:head>
@@ -84,9 +92,12 @@
 		<h1>Maya.IO</h1>
 		<p>Your Talking AI Assistant</p>
 	</header>
-
 	<main class="app-main">
-		<ChatInterface {messages} {isLoading} />
+		<ChatInterface 
+			{messages} 
+			{isLoading} 
+			on:newChat={handleNewChat}
+		/>
 		<SpeechControls 
 			{isListening} 
 			on:speechResult={e => handleSpeechResult(e.detail)}
