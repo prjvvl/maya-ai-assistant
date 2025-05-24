@@ -34,7 +34,7 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ 
+				body: JSON.stringify({
 					message: transcript,
 					conversationHistory: messages.slice(-10) // Send last 10 messages for context
 				})
@@ -45,7 +45,7 @@
 			}
 
 			const data = await response.json();
-			
+
 			// Add AI response
 			const aiMessage: Message = {
 				id: (Date.now() + 1).toString(),
@@ -87,72 +87,32 @@
 	<meta name="description" content="A voice-enabled AI assistant powered by Google Gemini" />
 </svelte:head>
 
-<div class="container">
-	<header>
-		<h1>Maya.IO</h1>
-		<p>Your Talking AI Assistant</p>
-	</header>
-	<main class="app-main">
-		<ChatInterface 
-			{messages} 
-			{isLoading} 
-			on:newChat={handleNewChat}
-		/>
-		<SpeechControls 
-			{isListening} 
-			on:speechResult={e => handleSpeechResult(e.detail)}
-			on:listeningChange={e => handleListeningChange(e.detail)}
-		/>
-	</main>
+<div class="app-container">
+	<ChatInterface
+		{messages}
+		{isLoading}
+		{isListening}
+		on:newChat={handleNewChat}
+		on:speechResult={(e) => handleSpeechResult(e.detail)}
+		on:listeningChange={(e) => handleListeningChange(e.detail)}
+	/>
 </div>
 
 <style>
-	.container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 2rem;
-		min-height: 100vh;
+	.app-container {
+		height: 100vh;
 		display: flex;
 		flex-direction: column;
+		background: #f5f5f5;
 	}
 
-	header {
-		text-align: center;
-		margin-bottom: 2rem;
-		color: white;
-	}
-
-	header h1 {
-		font-size: 3rem;
-		margin: 0;
-		font-weight: bold;
-		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-	}
-
-	header p {
-		font-size: 1.2rem;
-		margin: 0.5rem 0 0 0;
-		opacity: 0.9;
-	}
-
-	.app-main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	@media (max-width: 768px) {
-		.container {
-			padding: 1rem;
-		}
-
-		header h1 {
-			font-size: 2rem;
-		}
-
-		header p {
-			font-size: 1rem;
+	@media (min-width: 768px) {
+		.app-container {
+			max-width: 450px;
+			margin: 0 auto;
+			border-left: 1px solid #e0e0e0;
+			border-right: 1px solid #e0e0e0;
+			background: white;
 		}
 	}
 </style>
