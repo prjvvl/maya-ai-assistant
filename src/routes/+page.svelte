@@ -12,7 +12,7 @@
 	onMount(() => {
 		// Initialize speech service
 		speechService.init();
-		
+
 		// Add initial greeting message
 		addInitialGreeting();
 	});
@@ -25,7 +25,7 @@
 			timestamp: new Date()
 		};
 		messages = [greetingMessage];
-		
+
 		// Speak the greeting
 		setTimeout(() => {
 			speechService.speak(greetingMessage.text);
@@ -107,7 +107,7 @@
 	<meta name="description" content="A voice-enabled AI assistant powered by Google Gemini" />
 </svelte:head>
 
-<div class="app-container">
+<div class="app-container" class:loaded={true}>
 	<ChatInterface
 		{messages}
 		{isLoading}
@@ -124,15 +124,54 @@
 		display: flex;
 		flex-direction: column;
 		background: #f5f5f5;
+		opacity: 0;
+		animation: fadeInApp 0.8s ease-out forwards;
 	}
 
+	.app-container.loaded {
+		opacity: 1;
+	}
+
+	@keyframes fadeInApp {
+		0% {
+			opacity: 0;
+			transform: scale(0.98);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	/* Desktop improvements */
 	@media (min-width: 768px) {
 		.app-container {
-			max-width: 450px;
+			max-width: 1200px;
 			margin: 0 auto;
-			border-left: 1px solid #e0e0e0;
-			border-right: 1px solid #e0e0e0;
-			background: white;
+			background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+			border-radius: 0;
+			box-shadow:
+				0 20px 40px rgba(0, 0, 0, 0.08),
+				0 8px 16px rgba(0, 0, 0, 0.04);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.app-container {
+			margin: 2rem auto;
+			border-radius: 24px;
+			overflow: hidden;
+			height: calc(100vh - 4rem);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			backdrop-filter: blur(20px);
+		}
+	}
+
+	@media (min-width: 1440px) {
+		.app-container {
+			max-width: 1400px;
+			margin: 3rem auto;
+			height: calc(100vh - 6rem);
 		}
 	}
 </style>

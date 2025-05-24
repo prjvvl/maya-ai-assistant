@@ -29,7 +29,7 @@ body {
 	margin: 0;
 	padding: 0;
 	height: 100%;
-	background: var(--background-color);
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 	color: var(--text-primary);
 	font-size: 16px;
 	line-height: 1.5;
@@ -108,5 +108,71 @@ details:focus-visible {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Desktop enhancements */
+@media (min-width: 1024px) {
+	body {
+		background: linear-gradient(
+			135deg,
+			#667eea 0%,
+			#764ba2 25%,
+			#f093fb 50%,
+			#ff9a9e 75%,
+			#fecfef 100%
+		);
+		background-attachment: fixed;
+		background-size: 400% 400%;
+		animation: gradientShift 15s ease infinite;
+	}
+
+	/* Add subtle animation to the background */
+	@keyframes gradientShift {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+}
+
+/* Enhanced scrollbar for desktop */
+@media (min-width: 768px) {
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 4px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: linear-gradient(135deg, rgba(102, 126, 234, 0.6), rgba(118, 75, 162, 0.6));
+		border-radius: 4px;
+		transition: background 0.3s ease;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+	}
+}
+
+/* Improved typography for larger screens */
+@media (min-width: 1200px) {
+	:root {
+		font-size: 18px;
+	}
+}
+
+/* High-end desktop experience */
+@media (min-width: 1440px) {
+	body {
+		background-size: 300% 300%;
 	}
 }

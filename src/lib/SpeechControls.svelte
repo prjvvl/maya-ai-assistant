@@ -510,7 +510,6 @@
 			font-size: 0.8rem;
 		}
 	}
-
 	/* Touch targets for mobile */
 	@media (max-width: 768px) {
 		.mic-button {
@@ -521,6 +520,78 @@
 		.clear-error {
 			min-height: 32px;
 			min-width: 32px;
+		}
+	}
+
+	/* Desktop enhancements */
+	@media (min-width: 768px) {
+		.speech-controls {
+			padding: 0;
+		}
+
+		.mic-button {
+			width: 60px;
+			height: 60px;
+			box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+			transition: all 0.3s ease;
+		}
+
+		.mic-button:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+		}
+
+		.mic-button svg {
+			width: 24px;
+			height: 24px;
+		}
+
+		.transcript-preview {
+			padding: 1rem 1.5rem;
+			font-size: 1rem;
+			border-radius: 16px;
+		}
+
+		.status-indicator {
+			padding: 0.75rem 1.25rem;
+			border-radius: 12px;
+		}
+
+		.status-text {
+			font-size: 1rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.mic-button {
+			width: 64px;
+			height: 64px;
+		}
+
+		.mic-button svg {
+			width: 26px;
+			height: 26px;
+		}
+
+		.transcript-preview {
+			padding: 1.25rem 1.75rem;
+			font-size: 1.05rem;
+		}
+
+		.status-indicator {
+			padding: 1rem 1.5rem;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.mic-button {
+			width: 68px;
+			height: 68px;
+		}
+
+		.mic-button svg {
+			width: 28px;
+			height: 28px;
 		}
 	}
 </style>

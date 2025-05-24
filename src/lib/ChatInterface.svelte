@@ -81,9 +81,35 @@
 			</div>
 		</div>
 	</div>
-
 	<!-- Messages -->
 	<div class="messages-container" bind:this={messagesContainer}>
+		{#if messages.length === 0}
+			<div class="welcome-container">
+				<div class="welcome-message">
+					<div class="welcome-icon">🎙️</div>
+					<h2>Welcome to Maya</h2>
+					<p>
+						Your intelligent voice assistant is ready to help. Click the microphone button to start
+						a conversation!
+					</p>
+					<div class="feature-highlights">
+						<div class="feature">
+							<span class="feature-icon">🗣️</span>
+							<span>Voice Recognition</span>
+						</div>
+						<div class="feature">
+							<span class="feature-icon">🤖</span>
+							<span>AI Powered</span>
+						</div>
+						<div class="feature">
+							<span class="feature-icon">🔊</span>
+							<span>Text-to-Speech</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		{/if}
+
 		{#each messages as message (message.id)}
 			<div class="message-wrapper {message.sender}">
 				{#if message.sender === 'assistant'}
@@ -113,6 +139,34 @@
 						<span></span>
 						<span></span>
 						<span></span>
+					</div>
+				</div>
+			</div>
+		{/if}
+
+		<!-- Welcome message for empty chat -->
+		{#if messages.length === 0}
+			<div class="welcome-container">
+				<div class="welcome-message">
+					<div class="welcome-icon">🎙️</div>
+					<h2>Welcome to Maya</h2>
+					<p>
+						Your intelligent voice assistant is ready to help. Click the microphone button to start
+						a conversation!
+					</p>
+					<div class="feature-highlights">
+						<div class="feature">
+							<span class="feature-icon">🗣️</span>
+							<span>Voice Recognition</span>
+						</div>
+						<div class="feature">
+							<span class="feature-icon">🤖</span>
+							<span>AI Powered</span>
+						</div>
+						<div class="feature">
+							<span class="feature-icon">🔊</span>
+							<span>Text-to-Speech</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -358,7 +412,6 @@
 			opacity: 0;
 		}
 	}
-
 	@keyframes slideInDown {
 		0% {
 			opacity: 0;
@@ -369,29 +422,64 @@
 			transform: translateY(0);
 		}
 	}
-	/* Messages */
+
+	@keyframes bounce {
+		0%,
+		20%,
+		50%,
+		80%,
+		100% {
+			transform: translateY(0);
+		}
+		40% {
+			transform: translateY(-10px);
+		}
+		60% {
+			transform: translateY(-5px);
+		}
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	} /* Messages */
 	.messages-container {
 		flex: 1;
 		overflow-y: auto;
 		overflow-x: hidden;
 		padding: 1rem;
-		background: #f8f9fa;
+		background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		min-height: 0;
 	}
-
 	.welcome-message {
 		text-align: center;
 		color: #6b7280;
 		padding: 2rem 1rem;
 		margin: auto 0;
+		animation: fadeIn 0.8s ease-out;
+	}
+
+	.welcome-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+		min-height: 300px;
 	}
 
 	.welcome-icon {
 		font-size: 3rem;
 		margin-bottom: 1rem;
+		animation: bounce 2s infinite;
 	}
 
 	.welcome-message h2 {
@@ -402,11 +490,49 @@
 	}
 
 	.welcome-message p {
-		margin: 0;
+		margin: 0 0 2rem 0;
 		font-size: 1rem;
 		line-height: 1.5;
 		max-width: 300px;
-		margin: 0 auto;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 2rem;
+	}
+
+	.feature-highlights {
+		display: flex;
+		gap: 1.5rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-top: 1rem;
+	}
+
+	.feature {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 1rem;
+		background: white;
+		border-radius: 12px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		transition: all 0.3s ease;
+		min-width: 100px;
+	}
+
+	.feature:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+	}
+
+	.feature-icon {
+		font-size: 1.5rem;
+	}
+
+	.feature span:last-child {
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: #374151;
 	}
 
 	.message-wrapper {
@@ -444,19 +570,25 @@
 	.avatar-image:hover {
 		transform: scale(1.05);
 	}
-
 	.message-bubble {
 		max-width: calc(80% - 40px);
 		padding: 0.75rem 1rem;
 		border-radius: 1.25rem;
 		position: relative;
 		word-wrap: break-word;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+		transition: all 0.2s ease;
 	}
 
+	.message-bubble:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	}
 	.message-wrapper.user .message-bubble {
 		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		color: white;
 		border-bottom-right-radius: 0.5rem;
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 	}
 
 	.message-wrapper.assistant .message-bubble {
@@ -464,6 +596,7 @@
 		color: #374151;
 		border: 1px solid #e5e7eb;
 		border-bottom-left-radius: 0.5rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 	}
 
 	.message-text {
@@ -618,11 +751,165 @@
 			padding: 0.75rem;
 		}
 	}
-
 	/* Tablet and desktop */
 	@media (min-width: 768px) {
 		.message-bubble {
-			max-width: 70%;
+			max-width: 65%;
+		}
+
+		.messages-container {
+			padding: 2rem;
+			gap: 1.25rem;
+		}
+
+		.message-wrapper {
+			margin-bottom: 0.75rem;
+		}
+
+		.message-avatar {
+			width: 36px;
+			height: 36px;
+		}
+
+		.message-bubble {
+			padding: 1rem 1.25rem;
+			font-size: 0.95rem;
+		}
+
+		.chat-header {
+			padding: 1rem 2rem;
+		}
+
+		.header-content {
+			max-width: none;
+		}
+		.input-area {
+			padding: 1.5rem 2rem;
+			background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+		}
+
+		.welcome-message {
+			padding: 3rem 2rem;
+		}
+
+		.welcome-message h2 {
+			font-size: 1.75rem;
+		}
+
+		.welcome-message p {
+			max-width: 400px;
+			font-size: 1.1rem;
+		}
+
+		.feature-highlights {
+			gap: 2rem;
+		}
+
+		.feature {
+			padding: 1.25rem;
+			min-width: 120px;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.message-bubble {
+			max-width: 60%;
+		}
+
+		.messages-container {
+			padding: 2.5rem;
+			gap: 1.5rem;
+		}
+
+		.message-bubble {
+			padding: 1.25rem 1.5rem;
+			font-size: 1rem;
+			line-height: 1.6;
+		}
+
+		.message-wrapper {
+			margin-bottom: 1rem;
+		}
+
+		.avatar-image {
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		}
+
+		.chat-header {
+			padding: 1.25rem 2.5rem;
+		}
+
+		.input-area {
+			padding: 2rem 2.5rem;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.message-bubble {
+			max-width: 55%;
+		}
+
+		.messages-container {
+			padding: 3rem;
+		}
+
+		.chat-header {
+			padding: 1.5rem 3rem;
+		}
+
+		.input-area {
+			padding: 2rem 3rem;
+		}
+
+		.app-title h1 {
+			font-size: 2rem;
+		}
+
+		.message-bubble {
+			font-size: 1.05rem;
+			padding: 1.5rem 1.75rem;
+		}
+		.message-avatar {
+			width: 40px;
+			height: 40px;
+		}
+
+		.welcome-message {
+			padding: 4rem 3rem;
+		}
+
+		.welcome-message h2 {
+			font-size: 2.25rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.welcome-message p {
+			max-width: 500px;
+			font-size: 1.2rem;
+			margin-bottom: 3rem;
+		}
+
+		.welcome-icon {
+			font-size: 4rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.feature-highlights {
+			gap: 2.5rem;
+		}
+
+		.feature {
+			padding: 1.5rem;
+			min-width: 140px;
+			border-radius: 16px;
+		}
+
+		.feature-icon {
+			font-size: 2rem;
+		}
+
+		.feature span:last-child {
+			font-size: 1rem;
 		}
 	}
 </style>
