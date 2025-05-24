@@ -4,10 +4,15 @@
 	import SpeechControls from '$lib/SpeechControls.svelte';
 	import { speechService } from '$lib/speechService';
 	import type { Message } from '$lib/types';
-
 	let messages: Message[] = [];
 	let isListening = false;
 	let isLoading = false;
+	let isSpeaking = false;
+
+	// Update speaking status periodically
+	setInterval(() => {
+		isSpeaking = speechService.isSpeaking();
+	}, 500);
 
 	onMount(() => {
 		// Initialize speech service
@@ -24,11 +29,26 @@
 			sender: 'assistant',
 			timestamp: new Date()
 		};
-		messages = [greetingMessage];
-
-		// Speak the greeting
-		setTimeout(() => {
-			speechService.speak(greetingMessage.text);
+		messages = [greetingMessage]; // Speak the greeting
+		setTimeout(async () => {
+			try {
+				console.log('Speaking initial greeting');
+				// Ensure speech synthesis is ready
+				await new Promise((resolve) => setTimeout(resolve, 500));
+				await speechService.speak(greetingMessage.text);
+				console.log('Initial greeting completed');
+			} catch (error) {
+				console.error('Error speaking greeting:', error);
+				// Try to reset and retry once
+				speechService.resetSpeechSynthesis();
+				setTimeout(async () => {
+					try {
+						await speechService.speak(greetingMessage.text);
+					} catch (retryError) {
+						console.error('Retry failed for greeting:', retryError);
+					}
+				}, 1000);
+			}
 		}, 1000); // Small delay to ensure everything is loaded
 	}
 	async function handleSpeechResult(transcript: string) {
@@ -71,10 +91,25 @@
 				sender: 'assistant',
 				timestamp: new Date()
 			};
-			messages = [...messages, aiMessage];
-
-			// Speak the response
-			await speechService.speak(data.response);
+			messages = [...messages, aiMessage]; // Speak the response
+			console.log('About to speak AI response:', data.response.substring(0, 50) + '...');
+			try {
+				await speechService.speak(data.response);
+				console.log('Speech completed successfully');
+			} catch (speechError) {
+				console.error('Speech error:', speechError);
+				// Try to reset and retry once
+				console.log('Attempting to reset speech synthesis and retry...');
+				speechService.resetSpeechSynthesis();
+				setTimeout(async () => {
+					try {
+						await speechService.speak(data.response);
+						console.log('Speech retry successful');
+					} catch (retryError) {
+						console.error('Speech retry failed:', retryError);
+					}
+				}, 1000);
+			}
 		} catch (error) {
 			console.error('Error:', error);
 			const errorMessage: Message = {
@@ -112,6 +147,7 @@
 		{messages}
 		{isLoading}
 		{isListening}
+		{isSpeaking}
 		on:newChat={handleNewChat}
 		on:speechResult={(e) => handleSpeechResult(e.detail)}
 		on:listeningChange={(e) => handleListeningChange(e.detail)}

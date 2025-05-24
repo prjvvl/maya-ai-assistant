@@ -2,10 +2,10 @@
 	import type { Message } from './types';
 	import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
 	import SpeechControls from './SpeechControls.svelte';
-
 	export let messages: Message[] = [];
 	export let isLoading = false;
 	export let isListening = false;
+	export let isSpeaking = false;
 
 	const dispatch = createEventDispatcher();
 	let messagesContainer: HTMLElement;
@@ -54,16 +54,19 @@
 				<div class="chat-details">
 					<div class="app-title">
 						<h1>maya</h1>
-					</div>
-					<div class="chat-status">
-						<span class="status-dot {isListening ? 'listening' : 'online'}"></span>
-						<span class="status-text">{isListening ? 'Listening...' : 'Online'}</span>
+					</div>					<div class="chat-status">
+						<span class="status-dot {isListening ? 'listening' : isSpeaking ? 'speaking' : 'online'}"></span>
+						<span class="status-text">{isListening ? 'Listening...' : isSpeaking ? 'Speaking...' : 'Online'}</span>
 					</div>
 				</div>
 			</div>
-			<div class="chat-actions">
-				{#if messages.length > 0}
-					<button class="new-chat-btn" on:click={startNewChat} title="Start new conversation">
+			<div class="chat-actions">				{#if messages.length > 0}
+					<button 
+						class="new-chat-btn" 
+						on:click={startNewChat} 
+						title="Start new conversation"
+						aria-label="Start new conversation"
+					>
 						<svg
 							width="18"
 							height="18"
@@ -316,7 +319,6 @@
 		transition: all 0.3s ease;
 		position: relative;
 	}
-
 	.status-dot.online {
 		background: #4ade80;
 		box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
@@ -325,6 +327,12 @@
 	.status-dot.listening {
 		background: #f59e0b;
 		box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+		animation: pulse-glow 1.5s infinite;
+	}
+
+	.status-dot.speaking {
+		background: #3b82f6;
+		box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
 		animation: pulse-glow 1.5s infinite;
 	}
 
