@@ -31,3 +31,13 @@ build/
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary and development files
+test-tts.html
+TTS_FIXES.md
+TTS_FIX_SUMMARY.md
+README_new.md
+
+# OS generated files
+Thumbs.db
+.DS_Store

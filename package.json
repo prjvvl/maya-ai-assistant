@@ -1,8 +1,28 @@
 {
 	"name": "maya",
-	"private": true,
-	"version": "0.0.0",
+	"description": "A voice-enabled AI assistant powered by Google Gemini and Web Speech API",
+	"version": "1.0.0",
+	"private": false,
 	"type": "module",
+	"keywords": [
+		"ai",
+		"voice",
+		"assistant",
+		"svelte",
+		"gemini",
+		"speech",
+		"sveltekit",
+		"typescript"
+	],
+	"author": "Prajwal",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/prajwal/maya.git"
+	},
+	"homepage": "https://github.com/prajwal/maya#readme",
+	"bugs": {
+		"url": "https://github.com/prajwal/maya/issues"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",

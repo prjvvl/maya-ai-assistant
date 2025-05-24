@@ -162,7 +162,7 @@
 		{#if error}
 			<div class="error-banner">
 				<span class="error-text">{error}</span>
-				<button class="clear-error" on:click={clearError}>
+				<button class="clear-error" on:click={clearError} aria-label="Clear error message">
 					<svg
 						width="16"
 						height="16"
