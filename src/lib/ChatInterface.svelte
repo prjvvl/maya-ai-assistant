@@ -96,7 +96,6 @@
 			<div class="welcome-container">
 				<div class="welcome-message">
 					<div class="welcome-icon">🎙️</div>
-					<h2>Welcome to Maya</h2>
 					<p>
 						Your intelligent voice assistant is ready to help. Click the microphone button to start
 						a conversation!
@@ -104,7 +103,7 @@
 					<div class="feature-highlights">
 						<div class="feature">
 							<span class="feature-icon">🗣️</span>
-							<span>Voice Recognition</span>
+							<span>Talk Directly</span>
 						</div>
 						<div class="feature">
 							<span class="feature-icon">🤖</span>
@@ -148,34 +147,6 @@
 						<span></span>
 						<span></span>
 						<span></span>
-					</div>
-				</div>
-			</div>
-		{/if}
-
-		<!-- Welcome message for empty chat -->
-		{#if messages.length === 0}
-			<div class="welcome-container">
-				<div class="welcome-message">
-					<div class="welcome-icon">🎙️</div>
-					<h2>Welcome to Maya</h2>
-					<p>
-						Your intelligent voice assistant is ready to help. Click the microphone button to start
-						a conversation!
-					</p>
-					<div class="feature-highlights">
-						<div class="feature">
-							<span class="feature-icon">🗣️</span>
-							<span>Voice Recognition</span>
-						</div>
-						<div class="feature">
-							<span class="feature-icon">🤖</span>
-							<span>AI Powered</span>
-						</div>
-						<div class="feature">
-							<span class="feature-icon">🔊</span>
-							<span>Text-to-Speech</span>
-						</div>
 					</div>
 				</div>
 			</div>

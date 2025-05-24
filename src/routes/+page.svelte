@@ -19,7 +19,7 @@
 		speechService.init();
 
 		// Add initial greeting message
-		addInitialGreeting();
+		// addInitialGreeting();
 	});
 
 	function addInitialGreeting() {
