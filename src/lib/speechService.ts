@@ -121,16 +121,16 @@ class SpeechService {
 			// If voices aren't loaded yet, wait for them
 			if (voices.length === 0) {
 				speechSynthesis.onvoiceschanged = () => {
-					this.setFemaleVoice(utterance);
+					this.setVoice(utterance);
 					speechSynthesis.speak(utterance);
 				};
 			} else {
-				this.setFemaleVoice(utterance);
+				this.setVoice(utterance);
 				speechSynthesis.speak(utterance);
 			}
 
-			utterance.rate = 0.9;
-			utterance.pitch = 1.1; // Slightly higher pitch for more feminine sound
+			utterance.rate = 1.0;
+			utterance.pitch = 1.3;
 			utterance.volume = 1;
 
 			utterance.onend = () => resolve();
@@ -138,25 +138,28 @@ class SpeechService {
 		});
 	}
 
-	private setFemaleVoice(utterance: SpeechSynthesisUtterance): void {
+	private setVoice(utterance: SpeechSynthesisUtterance): void {
 		const voices = speechSynthesis.getVoices();
 
-		// Priority order for female voices
-		const femaleVoiceNames = [
-			'Samantha', // macOS
-			'Google US English Female', // Chrome
-			'Microsoft Zira Desktop', // Windows
-			'Karen', // macOS
-			'Google UK English Female', // Chrome
-			'Microsoft Hazel Desktop', // Windows
-			'Anna', // Various systems
-			'Helena', // Various systems
-			'Susan', // Various systems
-			'Catherine' // Various systems
+		// Priority order for voices
+		const voiceNames = [
+			'Google US English Female',
+			'Microsoft Jenny Desktop',
+			'Microsoft Aria Desktop',
+			'Samantha',
+			'Google UK English Female',
+			'Microsoft Zira Desktop',
+			'Karen',
+			'Google English (US)',
+			'Anna',
+			'Microsoft Hazel Desktop',
+			'Helena',
+			'Susan',
+			'Catherine'
 		];
 
 		// First try to find voices by exact name match
-		for (const voiceName of femaleVoiceNames) {
+		for (const voiceName of voiceNames) {
 			const voice = voices.find((v) => v.name === voiceName);
 			if (voice) {
 				utterance.voice = voice;
@@ -164,24 +167,22 @@ class SpeechService {
 			}
 		}
 
-		// Fallback: find any female voice by name patterns
-		const femaleVoice = voices.find(
+		// Fallback: find any voice by name patterns
+		const fallbackVoice = voices.find(
 			(voice) =>
 				voice.lang.startsWith('en') &&
-				(voice.name.toLowerCase().includes('female') ||
-					voice.name.toLowerCase().includes('woman') ||
-					voice.name.toLowerCase().includes('zira') ||
-					voice.name.toLowerCase().includes('hazel') ||
-					voice.name.toLowerCase().includes('susan') ||
+				(voice.name.toLowerCase().includes('jenny') ||
+					voice.name.toLowerCase().includes('aria') ||
+					voice.name.toLowerCase().includes('female') ||
+					voice.name.toLowerCase().includes('google') ||
 					voice.name.toLowerCase().includes('samantha') ||
-					voice.name.toLowerCase().includes('karen') ||
-					voice.name.toLowerCase().includes('catherine') ||
+					voice.name.toLowerCase().includes('zira') ||
 					voice.name.toLowerCase().includes('anna') ||
-					voice.name.toLowerCase().includes('helena'))
+					voice.name.toLowerCase().includes('karen'))
 		);
 
-		if (femaleVoice) {
-			utterance.voice = femaleVoice;
+		if (fallbackVoice) {
+			utterance.voice = fallbackVoice;
 		}
 	}
 
@@ -190,6 +191,35 @@ class SpeechService {
 			return [];
 		}
 		return speechSynthesis.getVoices().filter((voice) => voice.lang.startsWith('en'));
+	}
+
+	getVoices(): SpeechSynthesisVoice[] {
+		if (!browser || !('speechSynthesis' in window)) {
+			return [];
+		}
+
+		const voices = speechSynthesis.getVoices();
+		const voiceNames = [
+			'Google US English Female',
+			'Microsoft Jenny Desktop',
+			'Microsoft Aria Desktop',
+			'Samantha',
+			'Google UK English Female',
+			'Microsoft Zira Desktop',
+			'Karen',
+			'Google English (US)',
+			'Anna'
+		];
+
+		return voices.filter(
+			(voice) =>
+				voice.lang.startsWith('en') &&
+				(voiceNames.includes(voice.name) ||
+					voice.name.toLowerCase().includes('jenny') ||
+					voice.name.toLowerCase().includes('aria') ||
+					voice.name.toLowerCase().includes('female') ||
+					voice.name.toLowerCase().includes('google'))
+		);
 	}
 
 	stopSpeaking(): void {
