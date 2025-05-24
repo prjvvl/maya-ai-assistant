@@ -41,3 +41,5 @@ README_new.md
 # OS generated files
 Thumbs.db
 .DS_Store
+
+.vercel
