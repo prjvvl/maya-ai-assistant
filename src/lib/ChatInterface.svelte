@@ -124,7 +124,7 @@
 		{#if isLoading}
 			<div class="message-wrapper assistant">
 				<div class="message-avatar">
-					<img src="/images/maya-profile.svg" alt="Maya" class="avatar-image" />
+					<img src="/images/maya.png" alt="Maya" class="avatar-image" />
 				</div>
 				<div class="message-bubble">
 					<div class="typing-indicator">
