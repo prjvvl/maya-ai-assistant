@@ -104,15 +104,28 @@
 
 		{#each messages as message (message.id)}
 			<div class="message-wrapper {message.sender}">
+				{#if message.sender === 'assistant'}
+					<div class="message-avatar">
+						<img src="/images/maya.png" alt="Maya" class="avatar-image" />
+					</div>
+				{/if}
 				<div class="message-bubble">
 					<div class="message-text">{message.text}</div>
 					<div class="message-time">{formatTime(message.timestamp)}</div>
 				</div>
+				{#if message.sender === 'user'}
+					<div class="message-avatar">
+						<img src="/images/user.png" alt="User" class="avatar-image" />
+					</div>
+				{/if}
 			</div>
 		{/each}
 
 		{#if isLoading}
 			<div class="message-wrapper assistant">
+				<div class="message-avatar">
+					<img src="/images/maya-profile.svg" alt="Maya" class="avatar-image" />
+				</div>
 				<div class="message-bubble">
 					<div class="typing-indicator">
 						<span></span>
@@ -413,6 +426,8 @@
 	.message-wrapper {
 		display: flex;
 		margin-bottom: 0.5rem;
+		align-items: flex-end;
+		gap: 0.5rem;
 	}
 
 	.message-wrapper.user {
@@ -423,8 +438,29 @@
 		justify-content: flex-start;
 	}
 
+	.message-avatar {
+		width: 32px;
+		height: 32px;
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s ease;
+	}
+
+	.avatar-image:hover {
+		transform: scale(1.05);
+	}
+
 	.message-bubble {
-		max-width: 80%;
+		max-width: calc(80% - 40px);
 		padding: 0.75rem 1rem;
 		border-radius: 1.25rem;
 		position: relative;
@@ -585,7 +621,12 @@
 		}
 
 		.message-bubble {
-			max-width: 85%;
+			max-width: calc(85% - 40px);
+		}
+
+		.message-avatar {
+			width: 28px;
+			height: 28px;
 		}
 
 		.welcome-message {
