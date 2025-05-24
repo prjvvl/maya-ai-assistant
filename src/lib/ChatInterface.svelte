@@ -84,17 +84,6 @@
 
 	<!-- Messages -->
 	<div class="messages-container" bind:this={messagesContainer}>
-		{#if messages.length === 0}
-			<div class="welcome-message">
-				<div class="welcome-icon">👋</div>
-				<h2>Hi there!</h2>
-				<p>
-					I'm Maya, your AI assistant. Tap the microphone below and start speaking to begin our
-					conversation.
-				</p>
-			</div>
-		{/if}
-
 		{#each messages as message (message.id)}
 			<div class="message-wrapper {message.sender}">
 				{#if message.sender === 'assistant'}

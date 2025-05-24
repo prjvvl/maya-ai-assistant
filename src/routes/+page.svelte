@@ -12,7 +12,25 @@
 	onMount(() => {
 		// Initialize speech service
 		speechService.init();
+		
+		// Add initial greeting message
+		addInitialGreeting();
 	});
+
+	function addInitialGreeting() {
+		const greetingMessage: Message = {
+			id: 'greeting-' + Date.now().toString(),
+			text: "Hello! I'm Maya, your AI assistant. I'm here to help you with anything you need. Feel free to speak to me by tapping the microphone button on the right!",
+			sender: 'assistant',
+			timestamp: new Date()
+		};
+		messages = [greetingMessage];
+		
+		// Speak the greeting
+		setTimeout(() => {
+			speechService.speak(greetingMessage.text);
+		}, 1000); // Small delay to ensure everything is loaded
+	}
 	async function handleSpeechResult(transcript: string) {
 		if (!transcript.trim()) return;
 
@@ -79,6 +97,8 @@
 		messages = [];
 		// Stop any ongoing speech
 		speechService.stop();
+		// Add initial greeting for new chat
+		addInitialGreeting();
 	}
 </script>
 

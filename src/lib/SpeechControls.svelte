@@ -216,6 +216,7 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		flex-direction: row-reverse;
 	}
 
 	.mic-button {
@@ -264,6 +265,9 @@
 		flex: 1;
 		display: flex;
 		align-items: center;
+		justify-content: flex-end;
+		text-align: right;
+		padding-right: 1rem;
 	}
 
 	.listening-text {
