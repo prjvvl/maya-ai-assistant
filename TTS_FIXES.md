@@ -9,20 +9,24 @@ This was a common issue with the Web Speech API where longer text would cause th
 ### Solutions Implemented
 
 1. **Text Chunking**: Split long text into smaller chunks (max 200 characters) to avoid browser limitations
+
    - Intelligent splitting by sentences, then by commas, then by words
    - Maintains natural speech flow with proper pauses between chunks
 
-2. **Better Error Handling**: 
+2. **Better Error Handling**:
+
    - Retry mechanism with up to 2 attempts per chunk
    - Timeout handling to prevent hanging speech
    - Graceful degradation when speech fails
 
 3. **Browser Compatibility**:
+
    - Reset speech synthesis between chunks to avoid browser quirks
    - Handle paused/stuck speech synthesis states
    - Different timeout strategies for different text lengths
 
 4. **State Management**:
+
    - Track speaking state internally to prevent conflicts
    - Queue management for multiple speech requests
    - Clean cancellation of ongoing speech
@@ -34,6 +38,7 @@ This was a common issue with the Web Speech API where longer text would cause th
 ## Key Changes Made
 
 ### speechService.ts
+
 - Added `splitTextIntoChunks()` method for intelligent text splitting
 - Implemented retry logic in `speakChunk()` and `attemptSpeak()` methods
 - Added state tracking with `isSpeakingState` and `speechQueue`
@@ -41,17 +46,20 @@ This was a common issue with the Web Speech API where longer text would cause th
 - Added `resetSpeechSynthesis()` method for browser quirks
 
 ### UI Components
+
 - Added `isSpeaking` prop to show speaking status
 - Enhanced status indicator with "Speaking..." state
 - Better visual feedback during speech synthesis
 
 ### Main App
+
 - Added retry logic with speech synthesis reset on failure
 - Better error logging and debugging information
 
 ## Testing
 
 To test the fixes:
+
 1. Start the development server: `npm run dev`
 2. Open the app and try asking questions that generate long responses
 3. Check the browser console for TTS debug logs
@@ -61,6 +69,7 @@ To test the fixes:
 ## Browser Compatibility
 
 These fixes have been tested and work well with:
+
 - Chrome/Chromium-based browsers
 - Firefox
 - Safari
@@ -69,6 +78,7 @@ These fixes have been tested and work well with:
 ## Common Issues and Solutions
 
 If TTS still doesn't work:
+
 1. Check browser console for errors
 2. Ensure microphone permissions are granted
 3. Try refreshing the page to reset speech synthesis
@@ -78,6 +88,7 @@ If TTS still doesn't work:
 ## Debug Information
 
 The console will show:
+
 - Text chunking information
 - Speech start/end events
 - Error messages and retry attempts

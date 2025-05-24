@@ -54,16 +54,22 @@
 				<div class="chat-details">
 					<div class="app-title">
 						<h1>maya</h1>
-					</div>					<div class="chat-status">
-						<span class="status-dot {isListening ? 'listening' : isSpeaking ? 'speaking' : 'online'}"></span>
-						<span class="status-text">{isListening ? 'Listening...' : isSpeaking ? 'Speaking...' : 'Online'}</span>
+					</div>
+					<div class="chat-status">
+						<span
+							class="status-dot {isListening ? 'listening' : isSpeaking ? 'speaking' : 'online'}"
+						></span>
+						<span class="status-text"
+							>{isListening ? 'Listening...' : isSpeaking ? 'Speaking...' : 'Online'}</span
+						>
 					</div>
 				</div>
 			</div>
-			<div class="chat-actions">				{#if messages.length > 0}
-					<button 
-						class="new-chat-btn" 
-						on:click={startNewChat} 
+			<div class="chat-actions">
+				{#if messages.length > 0}
+					<button
+						class="new-chat-btn"
+						on:click={startNewChat}
 						title="Start new conversation"
 						aria-label="Start new conversation"
 					>

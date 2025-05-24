@@ -148,36 +148,39 @@ class SpeechService {
 		try {
 			// Cancel any ongoing speech and reset speechSynthesis (browser quirk fix)
 			speechSynthesis.cancel();
-			
+
 			// Some browsers need this to properly reset
 			if (speechSynthesis.paused) {
 				speechSynthesis.resume();
 			}
 
 			// Add a small delay to ensure speechSynthesis is ready
-			await new Promise(resolve => setTimeout(resolve, 50));
+			await new Promise((resolve) => setTimeout(resolve, 50));
 
 			// Split long text into smaller chunks to avoid browser limitations
 			const chunks = this.splitTextIntoChunks(text, 200); // Max 200 characters per chunk
-			
+
 			console.log(`Split text into ${chunks.length} chunks`);
-			
+
 			for (let i = 0; i < chunks.length; i++) {
 				if (!this.isSpeakingState) {
 					console.log('Speech cancelled, stopping...');
 					break;
 				}
-				
-				console.log(`Speaking chunk ${i + 1}/${chunks.length}:`, chunks[i].substring(0, 30) + '...');
+
+				console.log(
+					`Speaking chunk ${i + 1}/${chunks.length}:`,
+					chunks[i].substring(0, 30) + '...'
+				);
 				await this.speakChunk(chunks[i], i > 0 ? 300 : 0); // Longer delay between chunks for better reliability
 			}
-			
+
 			console.log('TTS completed');
 		} catch (error) {
 			console.error('Speech error:', error);
 		} finally {
 			this.isSpeakingState = false;
-			
+
 			// Process next item in queue if any
 			if (this.speechQueue.length > 0) {
 				const nextText = this.speechQueue.shift()!;
@@ -192,24 +195,25 @@ class SpeechService {
 		}
 
 		const chunks: string[] = [];
-		const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-		
+		const sentences = text.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+
 		let currentChunk = '';
-		
+
 		for (const sentence of sentences) {
 			const trimmedSentence = sentence.trim();
 			if (!trimmedSentence) continue;
-			
+
 			// Add punctuation back
-			const sentenceWithPunct = trimmedSentence + 
+			const sentenceWithPunct =
+				trimmedSentence +
 				(text.charAt(text.indexOf(trimmedSentence) + trimmedSentence.length) || '.');
-			
+
 			if (currentChunk.length + sentenceWithPunct.length > maxLength) {
 				if (currentChunk) {
 					chunks.push(currentChunk.trim());
 					currentChunk = '';
 				}
-				
+
 				// If single sentence is too long, split by commas or words
 				if (sentenceWithPunct.length > maxLength) {
 					chunks.push(...this.splitLongSentence(sentenceWithPunct, maxLength));
@@ -220,19 +224,19 @@ class SpeechService {
 				currentChunk += (currentChunk ? ' ' : '') + sentenceWithPunct;
 			}
 		}
-		
+
 		if (currentChunk.trim()) {
 			chunks.push(currentChunk.trim());
 		}
-		
-		return chunks.filter(chunk => chunk.length > 0);
+
+		return chunks.filter((chunk) => chunk.length > 0);
 	}
 
 	private splitLongSentence(sentence: string, maxLength: number): string[] {
 		const chunks: string[] = [];
 		const parts = sentence.split(',');
 		let currentChunk = '';
-		
+
 		for (const part of parts) {
 			const trimmedPart = part.trim();
 			if (currentChunk.length + trimmedPart.length > maxLength) {
@@ -240,7 +244,7 @@ class SpeechService {
 					chunks.push(currentChunk.trim());
 					currentChunk = '';
 				}
-				
+
 				// If even a single part is too long, split by words
 				if (trimmedPart.length > maxLength) {
 					chunks.push(...this.splitByWords(trimmedPart, maxLength));
@@ -251,11 +255,11 @@ class SpeechService {
 				currentChunk += (currentChunk ? ', ' : '') + trimmedPart;
 			}
 		}
-		
+
 		if (currentChunk.trim()) {
 			chunks.push(currentChunk.trim());
 		}
-		
+
 		return chunks;
 	}
 
@@ -263,7 +267,7 @@ class SpeechService {
 		const words = text.split(' ');
 		const chunks: string[] = [];
 		let currentChunk = '';
-		
+
 		for (const word of words) {
 			if (currentChunk.length + word.length + 1 > maxLength) {
 				if (currentChunk) {
@@ -275,17 +279,17 @@ class SpeechService {
 				currentChunk += (currentChunk ? ' ' : '') + word;
 			}
 		}
-		
+
 		if (currentChunk.trim()) {
 			chunks.push(currentChunk.trim());
 		}
-		
+
 		return chunks;
 	}
 
 	private async speakChunk(text: string, delay: number = 0): Promise<void> {
 		if (delay > 0) {
-			await new Promise(resolve => setTimeout(resolve, delay));
+			await new Promise((resolve) => setTimeout(resolve, delay));
 		}
 
 		// Check if speech was cancelled during delay
@@ -303,18 +307,18 @@ class SpeechService {
 			} catch (error) {
 				attempt++;
 				console.warn(`Speech attempt ${attempt} failed:`, error);
-				
+
 				if (attempt < maxRetries) {
 					console.log(`Retrying speech in 500ms... (attempt ${attempt + 1}/${maxRetries})`);
-					await new Promise(resolve => setTimeout(resolve, 500));
-					
+					await new Promise((resolve) => setTimeout(resolve, 500));
+
 					// Reset speech synthesis before retry
 					speechSynthesis.cancel();
-					await new Promise(resolve => setTimeout(resolve, 100));
+					await new Promise((resolve) => setTimeout(resolve, 100));
 				}
 			}
 		}
-		
+
 		if (attempt >= maxRetries) {
 			console.error('Max speech retries reached, giving up on chunk:', text.substring(0, 30));
 		}
@@ -332,7 +336,7 @@ class SpeechService {
 			utterance.volume = 1.0;
 
 			// Timeout to prevent hanging
-			const timeoutDuration = Math.max((text.length * 100) + 3000, 5000); // Minimum 5 seconds
+			const timeoutDuration = Math.max(text.length * 100 + 3000, 5000); // Minimum 5 seconds
 			const timeout = setTimeout(() => {
 				if (!resolved) {
 					resolved = true;
@@ -374,7 +378,7 @@ class SpeechService {
 
 			// Get available voices and speak
 			const voices = speechSynthesis.getVoices();
-			
+
 			if (voices.length === 0) {
 				speechSynthesis.onvoiceschanged = () => {
 					if (!resolved && this.isSpeakingState) {
@@ -513,7 +517,7 @@ class SpeechService {
 		if (!browser || !('speechSynthesis' in window)) {
 			return { speaking: false, pending: false, paused: false, queue: 0 };
 		}
-		
+
 		return {
 			speaking: speechSynthesis.speaking,
 			pending: speechSynthesis.pending,
@@ -541,18 +545,18 @@ class SpeechService {
 	// Reset speech synthesis state (useful for browser quirks)
 	resetSpeechSynthesis(): void {
 		if (!browser || !('speechSynthesis' in window)) return;
-		
+
 		try {
 			speechSynthesis.cancel();
 			if (speechSynthesis.paused) {
 				speechSynthesis.resume();
 			}
 			speechSynthesis.cancel();
-			
+
 			// Clear our internal state
 			this.isSpeakingState = false;
 			this.speechQueue = [];
-			
+
 			console.log('Speech synthesis reset');
 		} catch (error) {
 			console.warn('Error resetting speech synthesis:', error);
