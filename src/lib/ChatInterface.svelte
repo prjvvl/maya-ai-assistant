@@ -46,46 +46,39 @@
 	<div class="chat-header">
 		<div class="header-background"></div>
 		<div class="header-content">
-			<div class="app-info">
-				<div class="app-logo">
-					<div class="logo-icon">
-						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-							<path
-								d="M8 12l2 2 4-4"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							/>
-						</svg>
-					</div>
-					<div class="app-title">
-						<h1>Maya.IO</h1>
-						<span class="subtitle">AI Assistant</span>
-					</div>
+			<div class="chat-info">
+				<div class="chat-avatar">
+					<img src="/images/maya.png" alt="Maya" class="header-avatar-image" />
+					<div class="online-indicator"></div>
 				</div>
-				<div class="status-indicator">
-					<span class="status-dot {isListening ? 'listening' : 'idle'}"></span>
-					<span class="status-text">{isListening ? 'Listening...' : 'Ready'}</span>
+				<div class="chat-details">
+					<div class="app-title">
+						<h1>Maya</h1>
+					</div>
+					<div class="chat-status">
+						<span class="status-dot {isListening ? 'listening' : 'online'}"></span>
+						<span class="status-text">{isListening ? 'Listening...' : 'Online'}</span>
+					</div>
 				</div>
 			</div>
-			{#if messages.length > 0}
-				<button class="new-chat-btn" on:click={startNewChat} title="Start new conversation">
-					<svg
-						width="18"
-						height="18"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					>
-						<path d="M12 5v14m-7-7h14" />
-					</svg>
-				</button>
-			{/if}
+			<div class="chat-actions">
+				{#if messages.length > 0}
+					<button class="new-chat-btn" on:click={startNewChat} title="Start new conversation">
+						<svg
+							width="18"
+							height="18"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path d="M12 5v14m-7-7h14" />
+						</svg>
+					</button>
+				{/if}
+			</div>
 		</div>
 	</div>
 
@@ -158,7 +151,7 @@
 	.chat-header {
 		background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 		color: white;
-		padding: 1.5rem 1rem;
+		padding: 0.75rem 1rem;
 		box-shadow:
 			0 4px 20px rgba(102, 126, 234, 0.3),
 			0 8px 40px rgba(118, 75, 162, 0.2);
@@ -192,54 +185,77 @@
 		z-index: 1;
 	}
 
-	.app-info {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		flex: 1;
-	}
-
-	.app-logo {
+	.chat-info {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
+		flex: 1;
 	}
 
-	.logo-icon {
-		width: 32px;
-		height: 32px;
-		background: rgba(255, 255, 255, 0.15);
-		border-radius: 12px;
+	.chat-avatar {
+		position: relative;
+		width: 36px;
+		height: 36px;
+		flex-shrink: 0;
+	}
+
+	.header-avatar-image {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		border: 2px solid rgba(255, 255, 255, 0.3);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
+
+	.online-indicator {
+		position: absolute;
+		bottom: 1px;
+		right: 1px;
+		width: 10px;
+		height: 10px;
+		background: #4ade80;
+		border: 2px solid white;
+		border-radius: 50%;
+		box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+	}
+
+	.chat-details {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-	}
-
-	.logo-icon svg {
-		width: 20px;
-		height: 20px;
-		color: white;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.125rem;
+		flex: 1;
 	}
 
 	.app-title {
 		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		line-height: 1;
+		align-items: center;
+	}
+
+	.chat-status {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.chat-actions {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	.app-title h1 {
 		margin: 0;
 		font-size: 1.75rem;
 		font-weight: 700;
+		font-family: 'Brush Script MT', 'Lucida Handwriting', 'Segoe Script', 'Dancing Script', cursive;
 		background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
 		background-clip: text;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		letter-spacing: -0.025em;
+		line-height: 1.1;
 	}
 
 	.subtitle {
@@ -251,23 +267,6 @@
 		letter-spacing: 0.5px;
 	}
 
-	.status-indicator {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background: rgba(255, 255, 255, 0.1);
-		padding: 0.5rem 0.75rem;
-		border-radius: 20px;
-		backdrop-filter: blur(10px);
-		border: 1px solid rgba(255, 255, 255, 0.15);
-		transition: all 0.3s ease;
-	}
-
-	.status-indicator:hover {
-		background: rgba(255, 255, 255, 0.15);
-		transform: translateY(-1px);
-	}
-
 	.status-dot {
 		width: 8px;
 		height: 8px;
@@ -276,13 +275,14 @@
 		position: relative;
 	}
 
-	.status-dot.idle {
-		background: rgba(255, 255, 255, 0.6);
+	.status-dot.online {
+		background: #4ade80;
+		box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
 	}
 
 	.status-dot.listening {
-		background: #4ade80;
-		box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+		background: #f59e0b;
+		box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
 		animation: pulse-glow 1.5s infinite;
 	}
 
@@ -294,32 +294,30 @@
 		right: -2px;
 		bottom: -2px;
 		border-radius: 50%;
-		background: rgba(74, 222, 128, 0.3);
+		background: rgba(245, 158, 11, 0.3);
 		animation: pulse-ring 1.5s infinite;
 	}
 
 	.status-text {
-		font-size: 0.75rem;
+		font-size: 0.7rem;
 		font-weight: 500;
 		color: rgba(255, 255, 255, 0.9);
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		min-width: 60px;
+		letter-spacing: 0.025em;
 	}
 
 	.new-chat-btn {
 		background: rgba(255, 255, 255, 0.15);
 		color: white;
 		border: 1px solid rgba(255, 255, 255, 0.2);
-		padding: 0.75rem;
-		border-radius: 12px;
+		padding: 0.5rem;
+		border-radius: 10px;
 		cursor: pointer;
 		transition: all 0.3s ease;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 44px;
-		height: 44px;
+		width: 36px;
+		height: 36px;
 		backdrop-filter: blur(10px);
 		position: relative;
 		overflow: hidden;
@@ -570,50 +568,37 @@
 	/* Mobile optimizations */
 	@media (max-width: 480px) {
 		.chat-header {
-			padding: 1rem 0.75rem;
+			padding: 0.6rem 0.75rem;
 		}
 
-		.app-info {
-			gap: 0.75rem;
+		.chat-info {
+			gap: 0.6rem;
 		}
 
-		.app-logo {
-			gap: 0.5rem;
+		.chat-avatar {
+			width: 32px;
+			height: 32px;
 		}
 
-		.logo-icon {
-			width: 28px;
-			height: 28px;
-			border-radius: 10px;
-		}
-
-		.logo-icon svg {
-			width: 18px;
-			height: 18px;
+		.online-indicator {
+			width: 8px;
+			height: 8px;
+			bottom: 0px;
+			right: 0px;
 		}
 
 		.app-title h1 {
 			font-size: 1.5rem;
 		}
 
-		.subtitle {
-			font-size: 0.7rem;
-		}
-
-		.status-indicator {
-			padding: 0.4rem 0.6rem;
-			border-radius: 16px;
-		}
-
 		.status-text {
-			font-size: 0.7rem;
-			min-width: 50px;
+			font-size: 0.65rem;
 		}
 
 		.new-chat-btn {
-			width: 40px;
-			height: 40px;
-			padding: 0.6rem;
+			width: 32px;
+			height: 32px;
+			padding: 0.4rem;
 		}
 
 		.messages-container {

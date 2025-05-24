@@ -1,6 +1,6 @@
-# Maya.IO - Talking AI Assistant
+# Maya - Talking AI Assistant
 
-A modern web-based talking AI assistant built with SvelteKit and TypeScript. Maya.IO uses the Web Speech API for voice input/output and Google Gemini Pro for intelligent responses.
+A modern web-based talking AI assistant built with SvelteKit and TypeScript. Maya uses the Web Speech API for voice input/output and Google Gemini Pro for intelligent responses.
 
 ## ✨ Features
 
@@ -25,7 +25,7 @@ A modern web-based talking AI assistant built with SvelteKit and TypeScript. May
 
    ```bash
    git clone <repository-url>
-   cd maya-io
+   cd maya
    ```
 
 2. Install dependencies:

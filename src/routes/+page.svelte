@@ -83,7 +83,7 @@
 </script>
 
 <svelte:head>
-	<title>Maya.IO - Talking AI Assistant</title>
+	<title>Maya - AI Assistant</title>
 	<meta name="description" content="A voice-enabled AI assistant powered by Google Gemini" />
 </svelte:head>
 
